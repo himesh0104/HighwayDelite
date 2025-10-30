@@ -12,9 +12,10 @@ export default function Header() {
         </div>
         <Link href="/" className="text-lg font-semibold tracking-tight">BookIt</Link>
       </div>
-      <div className="hidden md:flex items-center gap-2">
+      <div className="hidden md:flex items-center gap-4">
         <input className="w-72 rounded-md border border-hd-border bg-gray-100 px-3 py-2 text-sm" placeholder="Search experiences" />
         <button className="btn-cta px-4">Search</button>
+        <Link href="/about" className="text-sm text-hd-subtle hover:text-black">About</Link>
       </div>
     </header>
   );

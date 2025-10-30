@@ -47,7 +47,9 @@ export default function ExperienceDetailsPage() {
 
   const slotsForSelectedDate = useMemo(() => {
     if (!selectedDate) return [] as Slot[];
-    return availableSlots.filter((s) => new Date(s.dateTime).toISOString().slice(0, 10) === selectedDate);
+    return availableSlots
+      .filter((s) => new Date(s.dateTime).toISOString().slice(0, 10) === selectedDate)
+      .sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
   }, [availableSlots, selectedDate]);
 
   const formatDate = (iso: string) => new Date(iso).toLocaleString();
@@ -101,7 +103,7 @@ export default function ExperienceDetailsPage() {
                   {slotsForSelectedDate.length === 0 ? (
                     <span className="text-sm text-red-600">sold out right now 😭</span>
                   ) : (
-                    slotsForSelectedDate.slice(0,6).map((s) => (
+                    slotsForSelectedDate.map((s) => (
                       <button
                         key={s.id}
                         onClick={() => setSelectedSlot(s.id)}
@@ -113,6 +115,13 @@ export default function ExperienceDetailsPage() {
                   )}
                 </div>
                 <p className="mt-2 text-xs text-hd-subtle">All times are in IST (GMT +5:30)</p>
+              </div>
+
+              <div className="mt-6">
+                <h3 className="font-medium mb-2">About</h3>
+                <div className="text-sm text-hd-subtle bg-gray-100 border border-hd-border rounded px-3 py-2">
+                  {exp.description}
+                </div>
               </div>
             </div>
           </div>
