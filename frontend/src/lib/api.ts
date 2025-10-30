@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// quick axios client setup
+// axios client points to same-origin Next.js API routes
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
+  baseURL: '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 

@@ -29,6 +29,7 @@ const defaultOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   'https://highway-delite-qz2f.vercel.app',
+  'https://highway-delite-liart.vercel.app',
 ];
 
 const allowedOrigins = parseOrigins(process.env.ALLOWED_ORIGINS).length
@@ -45,6 +46,16 @@ app.use(
     credentials: true,
   })
 );
+
+// Explicitly handle preflight requests for all routes with the same rules
+app.options('*', cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    const ok = allowedOrigins.includes(origin);
+    callback(ok ? null : new Error(`CORS: Origin not allowed: ${origin}`), ok);
+  },
+  credentials: true,
+}));
 
 // json parsing
 // I always forget this and then req.body is undefined lol
