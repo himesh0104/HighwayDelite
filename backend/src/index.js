@@ -18,11 +18,30 @@ const PORT = process.env.PORT || 4000;
 app.use(helmet());
 app.use(morgan('dev'));
 
-// CORS for frontend (pretty open for now tbh)
-// TODO: maybe tighten this up if I deploy for real
+// ALLOWED_ORIGINS (e.g. "http://localhost:3000,https://highway-delite-qz2f.vercel.app")
+const parseOrigins = (v) =>
+  (v || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+const defaultOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://highway-delite-qz2f.vercel.app',
+];
+
+const allowedOrigins = parseOrigins(process.env.ALLOWED_ORIGINS).length
+  ? parseOrigins(process.env.ALLOWED_ORIGINS)
+  : defaultOrigins;
+
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGIN || '*',
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // allow non-browser clients
+      const ok = allowedOrigins.includes(origin);
+      callback(ok ? null : new Error(`CORS: Origin not allowed: ${origin}`), ok);
+    },
     credentials: true,
   })
 );
@@ -31,10 +50,18 @@ app.use(
 // I always forget this and then req.body is undefined lol
 app.use(express.json());
 
-// health
-// quick ping route so I can check if server is alive
+// health endpoints
+app.get('/', (_req, res) => {
+  res.json({ status: 'ok', message: 'BookIt backend root' });
+});
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'bookit-backend' });
+});
+app.get('/healthz', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+app.get('/ready', (_req, res) => {
+  res.json({ ready: true });
 });
 
 // routes
