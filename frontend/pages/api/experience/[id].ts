@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
 const backend = (path: string) => {
-  const base = process.env.BACKEND_URL || 'http://localhost:4000';
+  const base = 'https://highway-delite-qz2f.vercel.app';
   return `${base.replace(/\/$/, '')}${path}`;
 };
 

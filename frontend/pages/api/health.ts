@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store');
-  const base = process.env.BACKEND_URL || 'http://localhost:4000';
+  const base = 'https://highway-delite-qz2f.vercel.app';
   const url = `${base.replace(/\/$/, '')}/health`;
   try {
     const r = await axios.get(url, { timeout: 4000 });

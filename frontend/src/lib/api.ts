@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // axios client points to same-origin Next.js API routes
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://highway-delite-liart.vercel.app/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
